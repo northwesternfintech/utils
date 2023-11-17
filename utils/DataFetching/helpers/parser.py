@@ -104,6 +104,9 @@ def process_download(symbol, catalystBase):
         files = sorted([f for f in files if f.endswith(".gz")])
         for f in files: #for source gzip file
             ftype, time, pair = extract_string(f)
+            feature_target = str(base/ftype_features[ftype])
+            if not os.path.exists(feature_target):
+                os.makedirs(feature_target)
             target_dir = str(base / ftype_features[ftype] / pair) #this is where it is going:
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir)
@@ -119,7 +122,7 @@ def process_download(symbol, catalystBase):
                             if snapcount == 0:
                                 # NOTE: put stop at to 1 to parse the first snapshot only
                                 parse_snapshots(f_in, f_out, stop_at=None)
-                                snapcount += 1
+                                # snapcount += 1
                     except Exception as e:
                         print(f"Error parsing {pair_dir}/{f}")
                         print(e)
